@@ -21,13 +21,14 @@
 </script>
 
 <script lang="ts">
-	import PageInfo from '$lib/PageInfo.svelte';
+	import BlogPost from '$lib/BlogPost.svelte';
 
 	export let logseqExport: LogseqExport;
+
+	const pages: PageInfo[] = logseqExport.blocks.filter((block) => block.properties?.public);
 </script>
 
-<dl>
-	{#each logseqExport.blocks as info}
-		<PageInfo {info} />
-	{/each}
-</dl>
+{#each pages as page (page.id)}
+	<h1>{page['page-name']}</h1>
+	<BlogPost children={page.children} />
+{/each}

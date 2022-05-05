@@ -1,23 +1,28 @@
 <script lang="ts">
 	import { marked } from 'marked';
-	export let children: any[];
+	export let format: string | undefined;
+	export let items: PageItem[];
 
 	const parse = (md: string) => marked.parse(md);
+	const [_, ...postContent] = items;
 
-	const buffer = (blocks: any[]) => {
+	const htmlFromBlocks = (blocks: PageItem[], tag?: string) => {
 		let str = '';
 		blocks.forEach((block) => {
 			if (block.content) {
-				str += parse(block.content);
-			} else if (block.children.length) {
-				str += buffer(block.children);
+				if (tag) str += `<${tag}>`;
+				str += format === 'markdown' ? parse(block.content) : block.content;
+				if (tag) str += `</${tag}>`;
+			}
+			if (block.children.length) {
+				str += `<ul>${htmlFromBlocks(block.children, 'li')}</ul>`;
 			}
 		});
+
 		return str;
 	};
 
-	const html = buffer(children);
+	const html = htmlFromBlocks(postContent);
 </script>
 
-<hr />
 {@html html}

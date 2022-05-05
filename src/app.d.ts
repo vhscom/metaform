@@ -11,7 +11,10 @@ interface PageItem {
 interface PageInfo {
 	id: string;
 	'page-name'?: string;
-	properties?: { public?: boolean };
+	properties?: {
+		public?: boolean;
+		draft?: boolean;
+	};
 	format?: string;
 	children: PageItem[];
 }

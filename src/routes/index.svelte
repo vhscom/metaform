@@ -29,6 +29,8 @@
 </script>
 
 {#each pages as page (page.id)}
-	<h1>{page['page-name']}</h1>
-	<BlogPost children={page.children} />
+	{#if !page.properties?.draft}
+		<h1>{page['page-name']}</h1>
+		<BlogPost format={page.format} items={page.children} />
+	{/if}
 {/each}

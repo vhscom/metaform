@@ -1,4 +1,14 @@
 /// <reference types="@sveltejs/kit" />
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+	readonly VITE_SUPABASE_PUBLIC_ANON_KEY: string;
+	readonly VITE_SUPABASE_PROJECT_URL: string;
+}
+
+interface ImportMeta {
+	readonly env: ImportMetaEnv;
+}
 
 interface PageItem {
 	id: string;

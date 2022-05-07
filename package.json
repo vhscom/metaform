@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.21.0",
+    "@supabase/supabase-js": "^1.35.2",
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
     "@typescript-eslint/eslint-plugin": "^5.10.1",

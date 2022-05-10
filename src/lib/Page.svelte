@@ -4,7 +4,7 @@
 	export let items: PageItem[];
 
 	const parse = (md: string) => marked.parse(md);
-	const [_, ...postContent] = items;
+	const [_, ...pageContent] = items;
 
 	const htmlFromBlocks = (blocks: PageItem[], tag?: string) => {
 		let str = '';
@@ -21,8 +21,6 @@
 
 		return str;
 	};
-
-	const html = htmlFromBlocks(postContent);
 </script>
 
-{@html html}
+{@html htmlFromBlocks(pageContent)}

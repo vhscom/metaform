@@ -1,8 +1,8 @@
 <script lang="ts">
-	import BlogPost from '$lib/BlogPost.svelte';
+	import Page from '$lib/Page.svelte';
 
 	export let page: PageInfo;
 </script>
 
 <h1>{page['page-name']}</h1>
-<BlogPost items={page.children} format={page.format} />
+<Page items={page.children} format={page.format} />

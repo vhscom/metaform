@@ -29,7 +29,7 @@
 </script>
 
 {#each pages as page (page.id)}
-	{#if !page.properties?.draft}
+	{#if page.properties?.draft === false}
 		<h1>{page['page-name']}</h1>
 		<BlogPost format={page.format} items={page.children} />
 	{/if}

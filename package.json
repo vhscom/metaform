@@ -18,6 +18,7 @@
     "@supabase/supabase-js": "^1.35.2",
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
+    "@types/marked": "^4.0.3",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
     "eslint": "^7.32.0",

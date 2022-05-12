@@ -1,5 +1,5 @@
 <script type="ts">
-	export let pages: PageInfo[];
+	export let pages: Page[];
 	export let url: string;
 </script>
 

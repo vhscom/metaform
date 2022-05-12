@@ -1,6 +1,6 @@
 <script lang="ts">
 	import PageContent from '$lib/PageContent.svelte';
-	export let pages: PageInfo[];
+	export let pages: Page[];
 </script>
 
 {#each pages as page (page.id)}

@@ -25,7 +25,7 @@
 
 	export let logseqExport: LogseqExport;
 
-	const pages: PageInfo[] = logseqExport.blocks.filter((block) => block.properties?.public);
+	const pages: Page[] = logseqExport.blocks.filter((block) => block.properties?.public);
 </script>
 
 {#each pages as page (page.id)}

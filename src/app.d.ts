@@ -18,22 +18,22 @@ interface PageFragment {
 	content?: string;
 }
 
-interface PageProps {
+interface PageProperties {
 	public?: boolean;
 	draft?: boolean;
 }
 
-interface PageInfo {
+interface Page {
 	id: string;
 	'page-name'?: string;
-	properties?: PageProps;
+	properties?: PageProperties;
 	format?: string;
 	children: PageFragment[];
 }
 
 interface LogseqExport {
 	version: number;
-	blocks: PageInfo[];
+	blocks: Page[];
 }
 
 // See https://kit.svelte.dev/docs/types#app

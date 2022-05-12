@@ -1,10 +1,6 @@
 import { supabase } from '$lib/core/services';
 import type { RequestHandler } from '@sveltejs/kit';
-
-function containsEncodedComponents(str: string) {
-	// ie ?,=,&,/ etc
-	return decodeURI(str) !== decodeURIComponent(str);
-}
+import { containsEncodedComponents } from '$lib/utils/endpoint';
 
 export const get: RequestHandler = async ({ params }) => {
 	const title = containsEncodedComponents(params.title)

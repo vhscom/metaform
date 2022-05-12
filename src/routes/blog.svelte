@@ -6,6 +6,6 @@
 {#each pages as page (page.id)}
 	{#if page.properties?.draft === false}
 		<h1>{page['page-name']}</h1>
-		<Page format={page.format} items={page.children} />
+		<Page format={page.format} fragments={page.children} />
 	{/if}
 {/each}

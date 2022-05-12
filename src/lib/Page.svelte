@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { marked } from 'marked';
 	export let format: string | undefined;
-	export let items: PageItem[];
+	export let fragments: PageFragment[];
 
 	const parse = (md: string) => marked.parse(md);
-	const [_, ...pageContent] = items;
+	const [_, ...pageContent] = fragments;
 
-	const htmlFromBlocks = (blocks: PageItem[], tag?: string) => {
+	const htmlFromBlocks = (blocks: PageFragment[], tag?: string) => {
 		let str = '';
 		blocks.forEach((block) => {
 			if (block.content) {

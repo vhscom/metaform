@@ -5,4 +5,4 @@
 </script>
 
 <h1>{page['page-name']}</h1>
-<Page items={page.children} format={page.format} />
+<Page format={page.format} fragments={page.children} />

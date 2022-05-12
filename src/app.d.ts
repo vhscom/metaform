@@ -10,11 +10,11 @@ interface ImportMeta {
 	readonly env: ImportMetaEnv;
 }
 
-interface PageItem {
+interface PageFragment {
 	id: string;
 	properties?: JSON;
 	format: string;
-	children: PageItem[];
+	children: PageFragment[];
 	content?: string;
 }
 
@@ -26,7 +26,7 @@ interface PageInfo {
 		draft?: boolean;
 	};
 	format?: string;
-	children: PageItem[];
+	children: PageFragment[];
 }
 
 interface LogseqExport {

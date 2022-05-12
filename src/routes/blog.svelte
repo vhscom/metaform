@@ -4,8 +4,9 @@
 </script>
 
 {#each pages as page (page.id)}
+	{@const [_, ...blocks] = page.children}
 	{#if page.properties?.draft === false}
 		<h1>{page['page-name']}</h1>
-		<PageContent format={page.format} fragments={page.children} />
+		<PageContent format={page.format} {blocks} />
 	{/if}
 {/each}

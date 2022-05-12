@@ -2,10 +2,9 @@
 	import { marked } from 'marked';
 
 	export let format: string | undefined;
-	export let fragments: PageFragment[];
+	export let blocks: PageFragment[];
 
 	const parse = (md: string) => marked.parse(md);
-	const [_, ...pageContent] = fragments;
 
 	const htmlFromBlocks = (blocks: PageFragment[], tag?: string) => {
 		let str = '';
@@ -24,4 +23,4 @@
 	};
 </script>
 
-{@html htmlFromBlocks(pageContent)}
+{@html htmlFromBlocks(blocks)}

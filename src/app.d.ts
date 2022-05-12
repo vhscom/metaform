@@ -18,13 +18,15 @@ interface PageFragment {
 	content?: string;
 }
 
+interface PageProps {
+	public?: boolean;
+	draft?: boolean;
+}
+
 interface PageInfo {
 	id: string;
 	'page-name'?: string;
-	properties?: {
-		public?: boolean;
-		draft?: boolean;
-	};
+	properties?: PageProps;
 	format?: string;
 	children: PageFragment[];
 }

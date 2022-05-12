@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Page from '$lib/Page.svelte';
+	import PageContent from '$lib/PageContent.svelte';
 
 	export let page: PageInfo;
 </script>
 
 <h1>{page['page-name']}</h1>
-<Page format={page.format} fragments={page.children} />
+<PageContent format={page.format} fragments={page.children} />

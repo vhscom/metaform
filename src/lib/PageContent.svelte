@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { marked } from 'marked';
+
 	export let format: string | undefined;
 	export let fragments: PageFragment[];
 

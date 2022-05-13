@@ -4,15 +4,9 @@
 
 	export let page: Page;
 
-	let propertiesBlock: PageFragment | undefined;
-	let contentBlocks: PageFragment[];
-
-	if (page.properties) {
-		[propertiesBlock, ...contentBlocks] = page.children;
-	} else {
-		propertiesBlock = undefined;
-		contentBlocks = page.children;
-	}
+	const [propertiesBlock, ...contentBlocks] = page.properties
+		? page.children
+		: ([undefined, ...page.children] as PageFragment[]);
 </script>
 
 <h1>{page['page-name']}</h1>

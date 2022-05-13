@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Html from './Html.svelte';
+	import ContentBlock from './ContentBlock.svelte';
 
 	export let format: string | undefined;
 	export let blocks: PageFragment[];
@@ -11,6 +11,6 @@
 
 {#each blocks as block}
 	{#if !definesProperties(block)}
-		<Html {format} {block} />
+		<ContentBlock {format} {block} />
 	{/if}
 {/each}

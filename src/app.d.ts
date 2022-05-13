@@ -12,7 +12,7 @@ interface ImportMeta {
 
 interface PageFragment {
 	id: string;
-	properties?: JSON;
+	properties?: object;
 	format: string;
 	children: PageFragment[];
 	content?: string;

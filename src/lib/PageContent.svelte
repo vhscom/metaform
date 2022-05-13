@@ -6,16 +6,24 @@
 
 	const parse = (md: string) => marked.parse(md);
 
-	const htmlFromBlocks = (blocks: PageFragment[], tag?: string) => {
+	function definesProperties(block: PageFragment) {
+		return block.properties && Reflect.ownKeys(block.properties).length;
+	}
+
+	const htmlForBlocks = (blocks: PageFragment[], tag?: string) => {
 		let str = '';
+
 		blocks.forEach((block) => {
+			if (definesProperties(block)) return;
+
 			if (block.content) {
 				if (tag) str += `<${tag}>`;
 				str += format === 'markdown' ? parse(block.content) : block.content;
 				if (tag) str += `</${tag}>`;
 			}
+
 			if (block.children.length) {
-				str += `<ul>${htmlFromBlocks(block.children, 'li')}</ul>`;
+				str += `<ul>${htmlForBlocks(block.children, 'li')}</ul>`;
 			}
 		});
 
@@ -23,4 +31,4 @@
 	};
 </script>
 
-{@html htmlFromBlocks(blocks)}
+{@html htmlForBlocks(blocks)}

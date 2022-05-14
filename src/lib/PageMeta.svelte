@@ -3,6 +3,8 @@
 
 	export let properties: PageProperties | undefined;
 	export let block: PageFragment | undefined;
+	export let embeds: Embeds;
+	export let refs: References;
 
 	export let display: 'block' | 'none';
 
@@ -12,6 +14,10 @@
 </script>
 
 <aside style:display>
+	<strong>references:</strong>
+	{@html (refs && fence(refs)) ?? undefined}
+	<strong>embeds:</strong>
+	{@html (embeds && fence(embeds)) ?? undefined}
 	<strong>properties</strong>
 	{@html (properties && fence(properties)) ?? undefined}
 	<strong>block</strong>

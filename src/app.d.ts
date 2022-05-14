@@ -10,6 +10,22 @@ interface ImportMeta {
 	readonly env: ImportMetaEnv;
 }
 
+type JSONValue = string | number | boolean | JSONValue[] | JSONObject | null | undefined;
+
+interface JSONObject {
+	[key: string]: JSONValue;
+}
+
+interface Embeds extends JSONObject {
+	page: string[];
+	block: string[];
+}
+
+interface References extends JSONObject {
+	page: string[];
+	block: string[];
+}
+
 interface PageFragment {
 	id: string;
 	properties?: object;

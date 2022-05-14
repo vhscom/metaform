@@ -1,6 +1,6 @@
 import { supabase } from '$lib/core/services';
 import type { RequestHandler } from '@sveltejs/kit';
-import { containsEncodedComponents } from '$lib/utils/endpoint';
+import { containsEncodedComponents, embedsForPage, refsForPage } from '$lib/utils/endpoint';
 
 export const get: RequestHandler = async ({ params }) => {
 	const title = containsEncodedComponents(params.title)
@@ -17,5 +17,5 @@ export const get: RequestHandler = async ({ params }) => {
 		return { status: 404, error: 'Error fetching page reported by server.' };
 	}
 
-	return { body: { page } };
+	return { body: { page, embeds: embedsForPage(page), refs: refsForPage(page) } };
 };

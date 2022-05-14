@@ -4,7 +4,7 @@
 	export let properties: PageProperties | undefined;
 	export let block: PageFragment | undefined;
 	export let embeds: Embeds;
-	export let refs: References;
+	export let refs: NamedReferences;
 
 	export let display: 'block' | 'none';
 
@@ -13,7 +13,8 @@
 	}
 </script>
 
-<aside style:display>
+<details style:display style="margin-bottom:1rem;cursor:pointer">
+	<summary>Expand to view page meta</summary>
 	<strong>references:</strong>
 	{@html (refs && fence(refs)) ?? undefined}
 	<strong>embeds:</strong>
@@ -22,4 +23,4 @@
 	{@html (properties && fence(properties)) ?? undefined}
 	<strong>block</strong>
 	{@html (block && fence(block)) ?? undefined}
-</aside>
+</details>

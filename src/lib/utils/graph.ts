@@ -9,6 +9,18 @@ export function definesProperties(block: Page | PageFragment) {
 }
 
 /**
+ * Get blocks for page.
+ *
+ * @param page Page block in the graph
+ * @returns Ordered pair containing properties block, if present, and content blocks
+ */
+export function blocksForPage(page: Page) {
+	return definesProperties(page)
+		? page.children
+		: ([undefined, ...page.children] as PageFragment[]);
+}
+
+/**
  * Search graph recursively using regular expression with named capture group.
  * Peeks at content only and ignores branches which define properties.
  *

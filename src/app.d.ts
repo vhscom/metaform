@@ -16,14 +16,19 @@ interface JSONObject {
 	[key: string]: JSONValue;
 }
 
-interface Embeds extends JSONObject {
-	page: string[];
-	block: string[];
+interface NamedEmbeds extends JSONObject {
+	pages: string[];
+	blocks: string[];
 }
 
-interface References extends JSONObject {
-	page: string[];
-	block: string[];
+interface NamedReferences extends JSONObject {
+	pages: string[];
+	blocks: string[];
+}
+
+interface Embeds extends JSONObject {
+	pages: Page[];
+	blocks: PageFragment[];
 }
 
 interface PageFragment {
@@ -31,7 +36,7 @@ interface PageFragment {
 	properties?: object;
 	format: string;
 	children: PageFragment[];
-	content?: string;
+	content: string;
 }
 
 interface PageProperties {

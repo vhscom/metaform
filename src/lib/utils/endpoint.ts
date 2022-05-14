@@ -1,4 +1,5 @@
 import { findByExpression } from '$lib/utils/graph';
+import { pageEmbed, blockEmbed, pageRef, blockRef } from '$lib/utils/regex';
 
 /**
  * Check if path part contains URI encoded characters.
@@ -6,41 +7,33 @@ import { findByExpression } from '$lib/utils/graph';
  * @param path Component piece of a URI string
  * @returns True if the path part contains URI-encoded pieces
  */
-export function containsEncodedComponents(path: string): boolean {
+export function containsEncodedComponents(path: string) {
 	// ie ?,=,&,/ etc
 	return decodeURI(path) !== decodeURIComponent(path);
 }
 
 /**
- * Get embeds for page.
+ * Get named embeds for page.
  *
- * @param page Page to search for embeds
- * @returns JSON object containing arrays of list of page and block embeds
+ * @param page Page to search
+ * @returns Object containing lists of page and block embed names
  */
-export function embedsForPage(page: Page): Embeds {
-	const pageEmbed = /{{embed \[\[(?<title>.*)\]\]}}/;
-	const blockEmbed =
-		/{{embed \(\((?<uuid>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\)\)}}/;
-
+export function namedEmbedsForPage(page: Page): NamedEmbeds {
 	return {
-		page: findByExpression(page, pageEmbed, 'title'),
-		block: findByExpression(page, blockEmbed, 'uuid')
+		pages: findByExpression(page, pageEmbed, 'title'),
+		blocks: findByExpression(page, blockEmbed, 'uuid')
 	};
 }
 
 /**
- * Get references for page.
+ * Get named references for page.
  *
  * @param page Page to search for refs
- * @returns JSON object containing arrays of page and block references
+ * @returns Object containing lists of page and block reference names
  */
-export function refsForPage(page: Page): References {
-	const pageRef = /(?<!embed\s)\[\[(?<title>.*)\]\]/;
-	const blockRef =
-		/(?<!embed\s)\(\((?<uuid>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\)\)/;
-
+export function namedRefsForPage(page: Page): NamedReferences {
 	return {
-		page: findByExpression(page, pageRef, 'title'),
-		block: findByExpression(page, blockRef, 'uuid')
+		pages: findByExpression(page, pageRef, 'title'),
+		blocks: findByExpression(page, blockRef, 'uuid')
 	};
 }

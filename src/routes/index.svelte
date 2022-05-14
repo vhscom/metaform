@@ -26,12 +26,13 @@
 	export let logseqExport: LogseqExport;
 
 	const pages: Page[] = logseqExport.blocks.filter((block) => block.properties?.public);
+	const embeds = { pages: [], blocks: [] };
 </script>
 
 {#each pages as page (page.id)}
 	{@const [_, ...blocks] = page.children}
 	{#if page.properties?.draft === false}
 		<h1>{page['page-name']}</h1>
-		<PageContent format={page.format} {blocks} />
+		<PageContent {blocks} {embeds} />
 	{/if}
 {/each}

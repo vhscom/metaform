@@ -14,7 +14,7 @@ export const get: RequestHandler = async ({ params }) => {
 		.single();
 
 	if (error) {
-		return { status: 404, error: 'Error fetching page reported by server.' };
+		return { status: 400, body: { error } };
 	}
 
 	return { body: { page, embeds: embedsForPage(page), refs: refsForPage(page) } };

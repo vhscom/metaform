@@ -9,10 +9,7 @@ export const get: RequestHandler = async () => {
 		.limit(10);
 
 	if (error) {
-		return {
-			status: 404,
-			body: 'Big fail.'
-		};
+		return { status: 400, body: { error } };
 	}
 
 	return {
@@ -79,7 +76,7 @@ export const post: RequestHandler = async ({ request }) => {
 	const { data: body, error } = await supabase.from('export').insert(payload);
 
 	if (error) {
-		return { status: 404, body: 'Error inserting export reported by server.' };
+		return { status: 400, body: { error } };
 	}
 
 	return { status: 201, body };

@@ -21,11 +21,21 @@ export const get: RequestHandler = async ({ params, url }) => {
 		return { status: 400, body: { error } };
 	}
 
-	const promises = namedEmbedsForPage(page).pages.map(async (embedTitle) => {
-		const res = await fetch(`${url.origin}/api/embed/${encodeURIComponent(embedTitle)}.json`);
-		return await res.json();
+	const getEmbeddedPagePromises = (page: Page) =>
+		namedEmbedsForPage(page).pages.map(async (embedTitle) => {
+			const res = await fetch(`${url.origin}/api/embed/${encodeURIComponent(embedTitle)}.json`);
+			return await res.json();
+		});
+
+	const embeddedPages = [...(await Promise.all(getEmbeddedPagePromises(page)))];
+	const embeds: Embeds = { pages: embeddedPages, blocks: [] };
+
+	const embeddedPagesBySubpage = await Promise.all(
+		embeds.pages.map(async (page) => await Promise.all(getEmbeddedPagePromises(page)))
+	);
+	embeddedPagesBySubpage.forEach((pagesForSubpage) => {
+		embeds.pages.push(...pagesForSubpage);
 	});
-	const embeds: Embeds = { pages: [...(await Promise.all(promises))], blocks: [] };
 
 	return { body: { page, embeds, refs: namedRefsForPage(page) } };
 };

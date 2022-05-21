@@ -44,7 +44,7 @@ interface PageProperties {
 	draft?: boolean;
 }
 
-interface Page {
+interface Page extends JSONObject {
 	id: string;
 	'page-name'?: string;
 	properties?: PageProperties;

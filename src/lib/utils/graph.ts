@@ -27,7 +27,7 @@ export function blocksForPage(page: Page) {
  * @param block Arbitrary block in the graph
  * @param re Expression to search with containing named capture group
  * @param group Name of capture group
- * @returns Array of matches with results for named capture groups.
+ * @returns Array of matches with results for named capture groups
  */
 export function findByExpression(block: Page | PageFragment, re: RegExp, group: string) {
 	const reGlobal = new RegExp(re, 'g');

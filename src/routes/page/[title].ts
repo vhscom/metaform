@@ -21,21 +21,28 @@ export const get: RequestHandler = async ({ params, url }) => {
 		return { status: 400, body: { error } };
 	}
 
-	const getEmbeddedPagePromises = (page: Page) =>
-		namedEmbedsForPage(page).pages.map(async (embedTitle) => {
-			const res = await fetch(`${url.origin}/api/embed/${encodeURIComponent(embedTitle)}.json`);
-			return await res.json();
-		});
+	const uriByPageTitle = (title: string) => {
+		return `${url.origin}/api/embed/${encodeURIComponent(title)}.json`;
+	};
 
-	const embeddedPages = [...(await Promise.all(getEmbeddedPagePromises(page)))];
-	const embeds: Embeds = { pages: embeddedPages, blocks: [] };
+	const embeddedPagesForPage = async (page: Page, maxDepth = 2) => {
+		const pages = await Promise.all(
+			namedEmbedsForPage(page).pages.map(async (embedTitle) => {
+				return await (await fetch(uriByPageTitle(embedTitle))).json();
+			})
+		);
 
-	const embeddedPagesBySubpage = await Promise.all(
-		embeds.pages.map(async (page) => await Promise.all(getEmbeddedPagePromises(page)))
-	);
-	embeddedPagesBySubpage.forEach((pagesForSubpage) => {
-		embeds.pages.push(...pagesForSubpage);
-	});
+		if (maxDepth > 1) {
+			const embedded = await Promise.all(
+				pages.map(async (page) => await embeddedPagesForPage(page, --maxDepth))
+			);
+			embedded.forEach((subpages) => pages.push(...subpages));
+		}
+
+		return pages;
+	};
+
+	const embeds: Embeds = { pages: await embeddedPagesForPage(page), blocks: [] };
 
 	return { body: { page, embeds, refs: namedRefsForPage(page) } };
 };

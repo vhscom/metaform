@@ -2,7 +2,7 @@
 	import ContentBlock from './ContentBlock.svelte';
 	import { definesProperties } from '$lib/utils/graph';
 
-	export let blocks: PageFragment[];
+	export let blocks: PageBlock[];
 	export let embeds: Embeds;
 </script>
 

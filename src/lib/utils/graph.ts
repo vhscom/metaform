@@ -4,7 +4,7 @@
  * @param block Arbitrary block in the graph
  * @returns Number of properties or undefined if properties key not present
  */
-export function definesProperties(block: Page | PageFragment) {
+export function definesProperties(block: Page | PageBlock) {
 	return block.properties && Reflect.ownKeys(block.properties).length;
 }
 
@@ -15,9 +15,7 @@ export function definesProperties(block: Page | PageFragment) {
  * @returns Ordered pair containing properties block, if present, and content blocks
  */
 export function blocksForPage(page: Page) {
-	return definesProperties(page)
-		? page.children
-		: ([undefined, ...page.children] as PageFragment[]);
+	return definesProperties(page) ? page.children : ([undefined, ...page.children] as PageBlock[]);
 }
 
 /**
@@ -29,7 +27,7 @@ export function blocksForPage(page: Page) {
  * @param group Name of capture group
  * @returns Array of matches with results for named capture groups
  */
-export function findByExpression(block: Page | PageFragment, re: RegExp, group: string) {
+export function findByExpression(block: Page | PageBlock, re: RegExp, group: string) {
 	const reGlobal = new RegExp(re, 'g');
 	const matches = [] as Array<string>;
 

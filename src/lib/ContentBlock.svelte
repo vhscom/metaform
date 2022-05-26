@@ -4,7 +4,7 @@
 	import { skeletonPageFromTitle } from '$lib/utils/embed';
 	import PageEmbed from './PageEmbed.svelte';
 
-	export let block: PageFragment;
+	export let block: PageBlock;
 	export let embeds: Embeds;
 	export let inline = false;
 

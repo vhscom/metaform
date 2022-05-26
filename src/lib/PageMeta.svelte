@@ -2,7 +2,7 @@
 	import { marked } from 'marked';
 
 	export let properties: PageProperties | undefined;
-	export let block: PageFragment | undefined;
+	export let block: PageBlock | undefined;
 	export let embeds: Embeds;
 	export let refs: NamedReferences;
 

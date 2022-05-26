@@ -28,14 +28,14 @@ interface NamedReferences extends JSONObject {
 
 interface Embeds extends JSONObject {
 	pages: Page[];
-	blocks: PageFragment[];
+	blocks: PageBlock[];
 }
 
-interface PageFragment {
+interface PageBlock extends JSONObject {
 	id: string;
 	properties?: object;
 	format: string;
-	children: PageFragment[];
+	children: PageBlock[];
 	content: string;
 }
 
@@ -49,7 +49,7 @@ interface Page extends JSONObject {
 	'page-name'?: string;
 	properties?: PageProperties;
 	format?: string;
-	children: PageFragment[];
+	children: PageBlock[];
 }
 
 interface LogseqExport {

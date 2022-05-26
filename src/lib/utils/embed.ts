@@ -1,4 +1,4 @@
-const nilPageFragment: PageFragment = {
+const nilPageBlock: PageBlock = {
 	id: '00000000-0000-0000-0000-000000000000',
 	format: 'markdown',
 	content: '',
@@ -9,7 +9,7 @@ const nilPage: Page = {
 	id: '00000000-0000-0000-0000-000000000000',
 	'page-name': '',
 	format: 'markdown',
-	children: [nilPageFragment]
+	children: [nilPageBlock]
 };
 
 /**

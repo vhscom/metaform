@@ -4,9 +4,13 @@
 --
 -- Create export table with jsonb column
 -- Create page table with fields to populate
+-- Create page block table with fields to populate
 -- Create function to populate page data
--- Create trigger to run function
--- Run trigger before export json upsert
+-- Create function to populate page block data
+-- Define triggers to run functions:
+-- -- Populate page data before export insert
+-- -- Populate page block data after page insert
+-- -- Populate (nested) page block data before block insert
 --
 -- IMPLEMENTATION
 --
@@ -21,13 +25,22 @@ create table export (
 	data jsonb not null
 );
 
--- Create table to extract export page blocks
+-- Create table to extract export pages
 create table page (
 	id uuid primary key,
 	"page-name" text,
 	properties jsonb,
 	format text,
 	children jsonb
+);
+
+-- Create table to extract page blocks
+create table page_block(
+	id uuid primary key,
+	properties jsonb,
+	format text,
+	children jsonb,
+	content text
 );
 
 -- Define trigger function to populate page table
@@ -51,8 +64,36 @@ begin
 end
 $$;
 
+-- Populate page data before export insert
 create trigger extract_page_records
 	before insert on export for each row
 	execute procedure extract_page_records ();
+
+-- Define trigger function to populate page block table
+create or replace function extract_page_block_records()
+returns trigger language plpgsql as $$
+begin
+	insert into page_block
+	select *
+	from jsonb_populate_recordset(null::page_block, new.children::jsonb)
+	on conflict (id) do update
+	set
+		properties = excluded.properties,
+		format = excluded.format,
+		children = excluded.children,
+		content = excluded.content;
+
+	return new;
+end $$;
+
+-- Populate page block data after page insert
+create trigger extract_page_block_records
+after insert on page
+for each row execute procedure extract_page_block_records();
+
+-- Populate (nested) page block data before block insert
+create trigger extract_page_block_block_records
+before insert on page_block
+for each row execute procedure extract_page_block_records();
 
 ---- END: UPLOAD LOGSEQ EXPORTS FEATURE

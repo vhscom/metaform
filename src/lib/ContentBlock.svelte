@@ -7,7 +7,7 @@
 		blockEmbedTag,
 		embedTagSplitter
 	} from '$lib/utils/regex';
-	import { skeletonPageFromTitle, skeletonPageBlockFromUuid } from '$lib/utils/embed';
+	import { blockForEmbed, skeletonForBlockEmbed, skeletonForPageEmbed } from '$lib/utils/embed';
 	import PageEmbed from './PageEmbed.svelte';
 	import BlockEmbed from './BlockEmbed.svelte';
 
@@ -19,38 +19,14 @@
 	const anyEmbedTagTest = (content: string) => embedTagSplitter.test(content);
 	const blockEmbedTagTest = (content: string) => blockEmbedTag.test(content);
 
-	const blockForPageEmbedTag = (content: string) => {
-		const matches = content.match(pageEmbed);
-		if (matches?.groups && matches.groups['title']) {
-			const { title } = matches.groups;
-			const embededPage = embeds.pages.find((embed) => embed['page-name'] === title);
-			if (embededPage) {
-				return embededPage;
-			} else {
-				const skeletonPage = skeletonPageFromTitle(title);
-				skeletonPage.children[0].content = '_Page content not loaded or unavailable._';
-				return skeletonPage;
-			}
-		}
-
-		return skeletonPageFromTitle('Error');
+	const pageForPageEmbed = (content: string) => {
+		const page = blockForEmbed(content, pageEmbed, embeds) as Page;
+		return page ? page : skeletonForPageEmbed(content, pageEmbed);
 	};
 
-	const blockForBlockEmbedTag = (content: string) => {
-		const matches = content.match(blockEmbed);
-		if (matches?.groups && matches.groups['uuid']) {
-			const { uuid } = matches.groups;
-			const embeddedBlock = embeds.blocks.find((embed) => embed['id'] === uuid);
-			if (embeddedBlock) {
-				return embeddedBlock;
-			} else {
-				const skeletonPageBlock = skeletonPageBlockFromUuid(uuid);
-				skeletonPageBlock.content = '_Block content not loaded or unavailable._';
-				return skeletonPageBlock;
-			}
-		}
-
-		return skeletonPageBlockFromUuid('00000000-0000-0000-0000-000000000000');
+	const blockForBlockEmbed = (content: string) => {
+		const block = blockForEmbed(content, blockEmbed, embeds) as PageBlock;
+		return block ? block : skeletonForBlockEmbed(content, blockEmbed);
 	};
 
 	const markup = (content: string, format: string, inline: boolean) => {
@@ -62,9 +38,9 @@
 {#if block.content && anyEmbedTagTest(block.content)}
 	{#each block.content.split(embedTagSplitter) as splitContent}
 		{#if pageEmbedTagTest(splitContent)}
-			<PageEmbed page={blockForPageEmbedTag(splitContent)} {embeds} />
+			<PageEmbed page={pageForPageEmbed(splitContent)} {embeds} />
 		{:else if blockEmbedTagTest(splitContent)}
-			<BlockEmbed block={blockForBlockEmbedTag(splitContent)} {embeds} />
+			<BlockEmbed block={blockForBlockEmbed(splitContent)} {embeds} />
 		{:else}
 			{@html markup(splitContent, block.format, inline)}
 		{/if}

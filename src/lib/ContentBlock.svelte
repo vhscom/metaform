@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { marked } from 'marked';
+	import { filterXSS } from 'xss';
 	import {
 		pageEmbed,
 		blockEmbed,
@@ -30,8 +31,9 @@
 	};
 
 	const markup = (content: string, format: string, inline: boolean) => {
+		const sanitized = filterXSS(content);
 		const parse = inline ? marked.parseInline : marked.parse;
-		return format === 'markdown' ? parse(content) : content;
+		return format === 'markdown' ? parse(sanitized) : sanitized;
 	};
 </script>
 

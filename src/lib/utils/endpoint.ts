@@ -39,7 +39,7 @@ export function namedRefsForPage(page: Page): NamedReferences {
 }
 
 /**
- * Get embedded pages.
+ * Get embedded pages for page.
  *
  * @param page Page to search for embedded pages
  * @param pageForTitle Helper to resolve page given a title
@@ -66,4 +66,36 @@ export async function pageEmbedsForPage(
 	);
 
 	return pages.concat(...subpages);
+}
+
+/**
+ * Get embedded blocks for page.
+ *
+ * @param page Page to search for embedded blocks
+ * @param blockForUuid Helper to resolve block given a UUID
+ * @param maxDepth Depth of search
+ * @returns List of embedded blocks
+ */
+export async function blockEmbedsForPage(
+	page: Page,
+	blockForUuid: (uuid: string) => Promise<PageBlock>,
+	maxDepth = 1
+) {
+	const uuids = findByExpression(page, blockEmbed, 'uuid');
+	const blocks: PageBlock[] = await Promise.all(
+		uuids.map(async (uuid) => await blockForUuid(uuid))
+	);
+
+	if (maxDepth <= 1) return blocks;
+
+	const subblocks: PageBlock[] = await blocks.reduce(
+		async (deferredBlocks, block) =>
+			[
+				...(await deferredBlocks),
+				...(await blockEmbedsForPage(block, blockForUuid, --maxDepth))
+			] as PageBlock[],
+		Promise.resolve([]) as Promise<PageBlock[]>
+	);
+
+	return blocks.concat(...subblocks);
 }

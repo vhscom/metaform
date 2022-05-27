@@ -1,17 +1,25 @@
 <script lang="ts">
 	import { marked } from 'marked';
-	import { pageEmbed, pageEmbedTag } from '$lib/utils/regex';
-	import { skeletonPageFromTitle } from '$lib/utils/embed';
+	import {
+		pageEmbed,
+		blockEmbed,
+		pageEmbedTag,
+		blockEmbedTag,
+		embedTagSplitter
+	} from '$lib/utils/regex';
+	import { skeletonPageFromTitle, skeletonPageBlockFromUuid } from '$lib/utils/embed';
 	import PageEmbed from './PageEmbed.svelte';
+	import BlockEmbed from './BlockEmbed.svelte';
 
 	export let block: PageBlock;
 	export let embeds: Embeds;
 	export let inline = false;
 
-	const embedTagSplitter = pageEmbedTag;
-	const embedTagTest = (content: string) => embedTagSplitter.test(content);
+	const pageEmbedTagTest = (content: string) => pageEmbedTag.test(content);
+	const anyEmbedTagTest = (content: string) => embedTagSplitter.test(content);
+	const blockEmbedTagTest = (content: string) => blockEmbedTag.test(content);
 
-	const blockForEmbedTag = (content: string) => {
+	const blockForPageEmbedTag = (content: string) => {
 		const matches = content.match(pageEmbed);
 		if (matches?.groups && matches.groups['title']) {
 			const { title } = matches.groups;
@@ -28,16 +36,35 @@
 		return skeletonPageFromTitle('Error');
 	};
 
+	const blockForBlockEmbedTag = (content: string) => {
+		const matches = content.match(blockEmbed);
+		if (matches?.groups && matches.groups['uuid']) {
+			const { uuid } = matches.groups;
+			const embeddedBlock = embeds.blocks.find((embed) => embed['id'] === uuid);
+			if (embeddedBlock) {
+				return embeddedBlock;
+			} else {
+				const skeletonPageBlock = skeletonPageBlockFromUuid(uuid);
+				skeletonPageBlock.content = '_Block content not loaded or unavailable._';
+				return skeletonPageBlock;
+			}
+		}
+
+		return skeletonPageBlockFromUuid('00000000-0000-0000-0000-000000000000');
+	};
+
 	const markup = (content: string, format: string, inline: boolean) => {
 		const parse = inline ? marked.parseInline : marked.parse;
 		return format === 'markdown' ? parse(content) : content;
 	};
 </script>
 
-{#if block.content && embedTagTest(block.content)}
+{#if block.content && anyEmbedTagTest(block.content)}
 	{#each block.content.split(embedTagSplitter) as splitContent}
-		{#if embedTagTest(splitContent)}
-			<PageEmbed page={blockForEmbedTag(splitContent)} {embeds} />
+		{#if pageEmbedTagTest(splitContent)}
+			<PageEmbed page={blockForPageEmbedTag(splitContent)} {embeds} />
+		{:else if blockEmbedTagTest(splitContent)}
+			<BlockEmbed block={blockForBlockEmbedTag(splitContent)} {embeds} />
 		{:else}
 			{@html markup(splitContent, block.format, inline)}
 		{/if}

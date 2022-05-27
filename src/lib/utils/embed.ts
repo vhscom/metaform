@@ -1,8 +1,8 @@
 const nilPageBlock: PageBlock = {
 	id: '00000000-0000-0000-0000-000000000000',
 	format: 'markdown',
-	content: '',
-	children: []
+	children: [],
+	content: ''
 };
 
 const nilPage: Page = {
@@ -11,6 +11,20 @@ const nilPage: Page = {
 	format: 'markdown',
 	children: [nilPageBlock]
 };
+
+/**
+ * Create skeleton page block from title.
+ *
+ * @returns Skeleton page block
+ */
+export function skeletonPageBlockFromUuid(uuid: string) {
+	const block = nilPageBlock;
+	if (uuid) {
+		block.id = uuid;
+	}
+
+	return block;
+}
 
 /**
  * Create skeleton page from title.

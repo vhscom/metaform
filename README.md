@@ -38,7 +38,7 @@ Lighthouse tests on Cloudflare have shown depth 6 page embeds with 300ms first p
 1. Copy source to your own GitHub repo
 1. Create accounts on Supabase and Cloudflare Pages
 1. Run `setup.sql` in Supabase SQL editor
-1. Add Supabase project URL and API keys to CF environment variables
+1. Add [Supabase environment variables](https://github.com/vhscom/metaform/blob/trunk/src/lib/core/services/supabase.ts#L16-L17)
 1. (Recommend) Configure Cloudflare Pages to use PNPM
 1. Push commit to GitHub to deploy to Cloudflare
 1. Navigate to Pages site
@@ -50,8 +50,7 @@ Make sure you have Node 16 and Pnpm CLI.
 
 1. Copy source locally
 1. Run `pnpm install`
-1. Create a `.env.local` file in project root
-1. Add 2 environment vars for Supabase project and anon key
+1. Create a `.env.local` file in project root with [Supabase env vars](https://github.com/vhscom/metaform/blob/trunk/src/lib/core/services/supabase.ts#L16-L17)
 1. Run `setup.sql` in Supabase SQL editor
 1. Run locally with `pnpm dev` and open site in browser
 1. Use `pnpm build && pnpm preview` and open site in browser

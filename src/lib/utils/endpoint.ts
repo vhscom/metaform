@@ -50,7 +50,7 @@ export async function pageEmbedsForPage(
 	page: Page,
 	pageForTitle: (title: string) => Promise<Page>,
 	maxDepth = 6
-) {
+): Promise<Array<Page>> {
 	const titles = findByExpression(page, pageEmbed, 'title');
 	const pages: Page[] = await Promise.all(titles.map(async (title) => await pageForTitle(title)));
 
@@ -80,7 +80,7 @@ export async function blockEmbedsForPage(
 	page: Page,
 	blockForUuid: (uuid: string) => Promise<PageBlock>,
 	maxDepth = 1
-) {
+): Promise<Array<PageBlock>> {
 	const uuids = findByExpression(page, blockEmbed, 'uuid');
 	const blocks: PageBlock[] = await Promise.all(
 		uuids.map(async (uuid) => await blockForUuid(uuid))

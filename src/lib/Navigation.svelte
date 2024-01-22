@@ -8,7 +8,7 @@
 
 <nav>
 	{#each items as { href, name }}
-		<a sveltekit:prefetch {href}>{name}</a>
+		<a data-sveltekit-preload-data {href}>{name}</a>
 	{/each}
 </nav>
 

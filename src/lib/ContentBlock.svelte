@@ -52,8 +52,9 @@
 {/if}
 
 {#if block.children.length}
+	{@const blocks = block.children}
 	<ul>
-		{#each block.children as block}
+		{#each blocks as block}
 			<li><svelte:self {block} {embeds} inline={true} /></li>
 		{/each}
 	</ul>
